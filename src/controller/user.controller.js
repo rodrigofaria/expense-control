@@ -1,9 +1,15 @@
 const service = require('../service/user.service')
 
-const create = (req, res) => {
+const create = async (req, res) => {
     const user = req.body
-    service.create(user)
-    res.status(200).send('User create successfully')
+    await service.create(user)
+        .then(() => {
+            res.status(200).send('User create successfully')
+        })
+        .catch(err => {
+            console.error(err)
+            res.status(400).send('Failed to create user')
+        })
 }
 
 const isValidUser = (req, res, next) => {
